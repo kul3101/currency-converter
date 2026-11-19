@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="sidelah" translate="label" sortOrder="900">
+            <label>Sidelah</label>
+        </tab>
+        <section id="sidelah_currency_converter" translate="label" sortOrder="10"
+                 showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Currency Converter</label>
+            <tab>sidelah</tab>
+            <resource>Sidelah_CurrencyConverter::config</resource>
+            <group id="general" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10"
+                       showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable Converter Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Storefront URL: /currency-converter</comment>
+                </field>
+                <field id="default_from" translate="label" type="text" sortOrder="20"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default From Currency</label>
+                    <comment>ISO code, e.g. GBP. Leave empty to use the store's current currency.</comment>
+                </field>
+                <field id="default_to" translate="label" type="text" sortOrder="30"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default To Currency</label>
+                    <comment>ISO code. Falls back to the first supported currency if empty, unsupported or equal to From.</comment>
+                </field>
+                <field id="default_range" translate="label" type="select" sortOrder="40"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default Chart Range</label>
+                    <source_model>Sidelah\CurrencyConverter\Model\Config\Source\HistoryRange</source_model>
+                </field>
+            </group>
+            <group id="api" translate="label" sortOrder="20" showInDefault="1">
+                <label>Frankfurter API</label>
+                <field id="base_url" translate="label" type="text" sortOrder="10" showInDefault="1">
+                    <label>Base URL</label>
+                    <validate>required-entry validate-url</validate>
+                </field>
+                <field id="timeout" translate="label" type="text" sortOrder="20" showInDefault="1">
+                    <label>Request Timeout (seconds)</label>
+                    <validate>required-entry validate-digits validate-greater-than-zero</validate>
+                </field>
+                <field id="cache_lifetime" translate="label" type="text" sortOrder="30" showInDefault="1">
+                    <label>Rate Cache Lifetime (seconds)</label>
+                    <comment>Frankfurter publishes new rates once per working day.</comment>
+                    <validate>required-entry validate-digits</validate>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

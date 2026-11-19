@@ -1,0 +1,21 @@
+{
+    "name": "sidelah/module-currency-converter",
+    "description": "Storefront currency exchange converter with historical chart, powered by the Frankfurter API.",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "require": {
+        "php": "~8.1.0||~8.2.0||~8.3.0||~8.4.0",
+        "magento/framework": "^103.0",
+        "magento/module-store": "^101.1",
+        "magento/module-backend": "^102.0",
+        "magento/module-config": "^101.2"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Sidelah\\CurrencyConverter\\": ""
+        }
+    }
+}

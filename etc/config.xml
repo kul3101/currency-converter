@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <sidelah_currency_converter>
+            <general>
+                <enabled>1</enabled>
+                <default_from>AED</default_from>
+                <default_to>USD</default_to>
+                <default_range>3m</default_range>
+            </general>
+            <api>
+                <base_url>https://api.frankfurter.dev/v2/</base_url>
+                <timeout>10</timeout>
+                <cache_lifetime>3600</cache_lifetime>
+            </api>
+        </sidelah_currency_converter>
+    </default>
+</config>
