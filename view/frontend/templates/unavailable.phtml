@@ -1,0 +1,11 @@
+<?php
+declare(strict_types=1);
+
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Magento\Framework\Escaper $escaper */
+?>
+<div class="message notice">
+    <div>
+        <?= $escaper->escapeHtml(__('The currency converter is temporarily unavailable. Please try again later.')) ?>
+    </div>
+</div>

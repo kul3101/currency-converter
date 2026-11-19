@@ -1,0 +1,98 @@
+<?php
+declare(strict_types=1);
+
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Magento\Framework\Escaper $escaper */
+/** @var \Sidelah\CurrencyConverter\ViewModel\Converter $viewModel */
+$viewModel = $block->getData('view_model');
+$groups = $viewModel->getCurrencyGroups();
+$defaultFrom = $viewModel->getDefaultFrom();
+$defaultTo = $viewModel->getDefaultTo();
+$defaultRange = $viewModel->getDefaultRange();
+$renderOptions = static function (string $selected) use ($groups, $escaper): string {
+    $html = '';
+    foreach ($groups as $label => $currencies) {
+        $html .= '<optgroup label="' . $escaper->escapeHtmlAttr($label) . '">';
+        foreach ($currencies as $currency) {
+            $html .= '<option value="' . $escaper->escapeHtmlAttr($currency['code']) . '"'
+                . ($currency['code'] === $selected ? ' selected' : '') . '>'
+                . $escaper->escapeHtml($currency['code'] . ' · ' . $currency['name'])
+                . '</option>';
+        }
+        $html .= '</optgroup>';
+    }
+    return $html;
+};
+?>
+<section class="sidelah-cc" data-mage-init="<?= $escaper->escapeHtmlAttr($viewModel->getMageInit()) ?>">
+    <p class="sidelah-cc__intro">
+        <?= $escaper->escapeHtml(
+            __('Convert between currencies using daily reference rates and see how the rate has moved over time.')
+        ) ?>
+    </p>
+
+    <form class="sidelah-cc__card" data-role="form" novalidate>
+        <div class="sidelah-cc__field sidelah-cc__field--amount">
+            <label for="sidelah-cc-amount"><?= $escaper->escapeHtml(__('Amount')) ?></label>
+            <input id="sidelah-cc-amount" type="number" inputmode="decimal" min="0" step="any" value="1"
+                   data-role="amount">
+        </div>
+
+        <div class="sidelah-cc__pair">
+            <div class="sidelah-cc__field">
+                <label for="sidelah-cc-from"><?= $escaper->escapeHtml(__('From')) ?></label>
+                <select id="sidelah-cc-from" data-role="from">
+                    <?= /* @noEscape */ $renderOptions($defaultFrom) ?>
+                </select>
+            </div>
+
+            <button type="button" class="sidelah-cc__swap" data-role="swap"
+                    aria-label="<?= $escaper->escapeHtmlAttr(__('Swap currencies')) ?>"
+                    title="<?= $escaper->escapeHtmlAttr(__('Swap currencies')) ?>">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+                    <path d="M7 7h12m0 0-4-4m4 4-4 4M17 17H5m0 0 4 4m-4-4 4-4"
+                          fill="none" stroke="currentColor" stroke-width="2"
+                          stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
+            <div class="sidelah-cc__field">
+                <label for="sidelah-cc-to"><?= $escaper->escapeHtml(__('To')) ?></label>
+                <select id="sidelah-cc-to" data-role="to">
+                    <?= /* @noEscape */ $renderOptions($defaultTo) ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="sidelah-cc__result" aria-live="polite">
+            <p class="sidelah-cc__converted" data-role="converted">&nbsp;</p>
+            <p class="sidelah-cc__rate" data-role="rate">&nbsp;</p>
+            <p class="sidelah-cc__meta" data-role="meta">&nbsp;</p>
+            <p class="sidelah-cc__error" data-role="error" role="alert" hidden></p>
+        </div>
+    </form>
+
+    <div class="sidelah-cc__card sidelah-cc__history">
+        <div class="sidelah-cc__history-head">
+            <h2 class="sidelah-cc__title"><?= $escaper->escapeHtml(__('Rate history')) ?></h2>
+            <div class="sidelah-cc__ranges" role="group"
+                 aria-label="<?= $escaper->escapeHtmlAttr(__('Chart range')) ?>">
+                <?php foreach ($viewModel->getRanges() as $range): ?>
+                    <button type="button" class="sidelah-cc__range"
+                            data-range="<?= $escaper->escapeHtmlAttr($range->value) ?>"
+                            aria-pressed="<?= $range === $defaultRange ? 'true' : 'false' ?>">
+                        <?= $escaper->escapeHtml($range->getLabel()) ?>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <dl class="sidelah-cc__stats" data-role="stats"></dl>
+        <div class="sidelah-cc__chart" data-role="chart" aria-busy="true"></div>
+    </div>
+
+    <noscript>
+        <div class="message notice">
+            <div><?= $escaper->escapeHtml(__('Please enable JavaScript to use the currency converter.')) ?></div>
+        </div>
+    </noscript>
+</section>
