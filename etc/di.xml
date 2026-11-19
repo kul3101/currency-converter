@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Sidelah\CurrencyConverter\Api\ConfigInterface"
+                type="Sidelah\CurrencyConverter\Model\Config"/>
+    <preference for="Sidelah\CurrencyConverter\Api\FrankfurterClientInterface"
+                type="Sidelah\CurrencyConverter\Model\Frankfurter\Client"/>
+    <preference for="Sidelah\CurrencyConverter\Api\CurrencyProviderInterface"
+                type="Sidelah\CurrencyConverter\Model\CurrencyProvider"/>
+    <preference for="Sidelah\CurrencyConverter\Api\CurrencyCodeValidatorInterface"
+                type="Sidelah\CurrencyConverter\Model\Validator\CurrencyCodeValidator"/>
+    <preference for="Sidelah\CurrencyConverter\Api\GetLatestRateInterface"
+                type="Sidelah\CurrencyConverter\Model\GetLatestRate"/>
+    <preference for="Sidelah\CurrencyConverter\Api\GetRateHistoryInterface"
+                type="Sidelah\CurrencyConverter\Model\GetRateHistory"/>
+
+    <type name="Sidelah\CurrencyConverter\Model\Frankfurter\Client">
+        <arguments>
+            <argument name="cache" xsi:type="object">Sidelah\CurrencyConverter\Model\Cache\Type</argument>
+        </arguments>
+    </type>
+</config>
