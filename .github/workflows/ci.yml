@@ -42,7 +42,7 @@ jobs:
             "bitexpert/phpstan-magento:^0.32"
 
       - name: Unit tests
-        run: vendor/bin/phpunit --bootstrap vendor/autoload.php Test/Unit
+        run: vendor/bin/phpunit --bootstrap Test/bootstrap.php Test/Unit
 
       - name: Coding standard (Magento2)
         run: vendor/bin/phpcs --standard=Magento2 --extensions=php,phtml,less --ignore=vendor/ .
