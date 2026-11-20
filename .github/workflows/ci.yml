@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Unit tests, coding standard and PHPStan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: bcmath, gd, intl, soap, sodium, xsl, zip
+          tools: composer:v2
+          coverage: none
+
+      # Magento packages come from the public Mage-OS mirror, so no
+      # repo.magento.com keys are needed. These changes only affect the runner.
+      - name: Install Magento framework and dev tools
+        run: |
+          composer config repositories.mage-os composer https://mirror.mage-os.org/
+          composer config --no-plugins allow-plugins.magento/composer-dependency-version-audit-plugin false
+          composer config --no-plugins allow-plugins.magento/magento-composer-installer false
+          composer config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+          composer require --no-interaction --no-progress --dev \
+            "phpunit/phpunit:^10.5" \
+            "magento/magento-coding-standard:*" \
+            "phpstan/phpstan:^1.12" \
+            "bitexpert/phpstan-magento:^0.32"
+
+      - name: Unit tests
+        run: vendor/bin/phpunit --bootstrap vendor/autoload.php Test/Unit
+
+      - name: Coding standard (Magento2)
+        run: vendor/bin/phpcs --standard=Magento2 --extensions=php,phtml,less --ignore=vendor/ .
+
+      - name: PHPStan level 8
+        run: vendor/bin/phpstan analyse --no-progress -c phpstan.neon.dist

@@ -1,5 +1,8 @@
 # Sidelah_CurrencyConverter
 
+[![CI](https://github.com/kul3101/currency-converter/actions/workflows/ci.yml/badge.svg)](https://github.com/kul3101/currency-converter/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 A Magento 2 module that adds a storefront currency converter page backed by the
 [Frankfurter API](https://frankfurter.dev). A shopper picks any currency Frankfurter
 supports as From and To, sees the current exchange rate, converts an amount, swaps the
@@ -110,3 +113,11 @@ vendor/bin/phpmd app/code/Sidelah/CurrencyConverter text dev/tests/static/testsu
 Current results: 27 tests passing; phpcs Magento2 standard with 0 errors and 0
 warnings (PHP, PHTML and LESS); PHPStan level 8 with no errors; PHPMD with the
 Magento ruleset clean; ESLint with the Magento coding standard ruleset clean.
+
+CI (`.github/workflows/ci.yml`) runs the unit tests, the Magento2 coding standard and
+PHPStan level 8 on every push to `main` and on pull requests. It installs Magento
+packages from the public Mage-OS mirror, so it needs no repo.magento.com keys.
+
+## License
+
+[MIT](LICENSE)
